@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import { useMovies } from "./useMovies";
 import { useLocalStorage } from "./useLocalStorage";
+import { useKeys } from "./useKeys";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -105,28 +106,12 @@ const Logo = () => {
 
 const Search = ({ query, setQuery }) => {
   const inputEl = useRef(null);
-  // useEffect(function () {
-  //   const inputEl = document.querySelector(".search");
-  //   console.log(inputEl);
-  //   inputEl.focus();
-  // }, []);
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (document.activeElement === inputEl.current) return;
-        if (e.code === "Enter") {
-          inputEl.current.focus();
-          setQuery("");
-        }
-      }
-      document.addEventListener("keydown", callback);
-      return function () {
-        document.addEventListener("keydown", callback);
-      };
-    },
-    [setQuery]
-  );
+  useKeys("Enter", function () {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setQuery("");
+  });
   return (
     <input
       className="search"
@@ -273,20 +258,7 @@ const MovieDetails = ({
     [title]
   );
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (e.code === "Escape") {
-          onCloseMovie();
-        }
-      }
-      document.addEventListener("keydown", callback);
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [onCloseMovie]
-  );
+  useKeys("Escape", onCloseMovie);
 
   return (
     <div className="details">
