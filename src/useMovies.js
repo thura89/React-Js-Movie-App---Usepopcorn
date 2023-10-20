@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const KEY = "d01c51ce";
-const useMovies = (query) => {
+export function useMovies(query) {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +53,4 @@ const useMovies = (query) => {
     [query]
   );
   return { movies, isLoading, error };
-};
-
-export default useMovies;
+}
